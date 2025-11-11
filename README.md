@@ -1,50 +1,113 @@
-# Welcome to your Expo app 👋
+# 🛒 MarketPlace
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**MarketPlace** is a modern and minimal e-commerce mobile application built with **React Native**.  
+It provides a smooth shopping experience by allowing users to browse products, view detailed information, and manage their shopping cart efficiently. The app focuses on simplicity, performance, and intuitive navigation.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Features
 
-   ```bash
-   npm install
-   ```
+- 🧭 **Simple Navigation** – Clean interface with easy movement between Home, Product Details, Cart, and Login.  
+- 💳 **Interactive Cart** – Add, remove, or update product quantities effortlessly.  
+- 🔍 **Product Details** – Image, price, description, and category for each product.  
+- 🔒 **Authentication (optional)** – Lightweight login system for user sessions.  
+- ⚡ **Redux Toolkit Integration** – Efficient state management for products, cart, and authentication.  
+- 🌐 **Fake Store API Integration** – Fetches realistic product data.  
+- 🎨 **Responsive UI** – Designed for iOS and Android devices with reusable components.  
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 🛠 Tools & Technologies
 
-In the output, you'll find options to open the app in a
+- **React Native** – Main framework  
+- **Redux Toolkit** – State management  
+- **React Navigation** – Navigation between screens  
+- **Axios / Fetch API** – HTTP requests  
+- **JavaScript (ES6+)** – Programming language  
+- **Babel** – JavaScript compiler  
+- **Prettier & ESLint** – Code formatting and linting  
+- **VS Code** – Recommended IDE  
+- **Android Studio / Xcode** – Testing on emulators and devices  
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🧩 Project Structure
 
-## Get a fresh project
+MarketPlace/
+│
+├── App.js # Entry point of the app
+├── package.json # Project dependencies and scripts
+├── babel.config.js # Babel configuration
+│
+├── assets/ # Images and icons
+│ ├── logo.png
+│ └── icons/
+│
+├── src/
+│ ├── api/
+│ │ └── fakeStoreApi.js
+│
+│ ├── navigation/
+│ │ └── AppNavigator.js
+│
+│ ├── redux/
+│ │ ├── store.js
+│ │ └── slices/
+│ │ ├── authSlice.js
+│ │ ├── productSlice.js
+│ │ └── cartSlice.js
+│
+│ ├── screens/
+│ │ ├── LoginScreen.js
+│ │ ├── HomeScreen.js
+│ │ ├── ProductDetailsScreen.js
+│ │ └── CartScreen.js
+│
+│ ├── components/
+│ │ ├── ProductCard.js
+│ │ ├── CategoryList.js
+│ │ └── Header.js
+│
+│ ├── styles/
+│ │ ├── colors.js
+│ │ ├── globalStyles.js
+│ │ └── screens/
+│ │ ├── loginStyles.js
+│ │ ├── homeStyles.js
+│ │ ├── productDetailsStyles.js
+│ │ └── cartStyles.js
+│
+│ └── utils/
+│ └── storage.js
+│
+└── README.md
 
-When you're ready, run:
+
+## Developers Team & Responsibilities
+
+| Developer | Role / Responsibility |
+|-----------|----------------------|
+| **Eng. Ali Hesham** | Developed the Home Page and main product browsing interface |
+| **Eng. Mustafa** | Developed Product & Product Details Screens, including API integration |
+| **Eng. Khairy** | Developed the Login Screen, handling user authentication and validation |
+| **Eng. Ahmed Ebrahim** | Managed Redux & State Management, ensuring smooth data flow across the app |
+| **Eng. Asmaa Adel** | Designed and implemented the Cart Screen and overall App Structure for maintainability |
+
+---
+
+## ⚡ Installation & Usage
 
 ```bash
-npm run reset-project
-```
+# Clone the repository
+git clone https:aliarfeen/react-native-marketplace
+cd MarketPlace
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+# Install dependencies
+npm install
 
-## Learn more
+# Run the app
+npx react-native run-android   # Android
+npx react-native run-ios       # iOS
+Enjoy browsing products!
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+© 2025 MarketPlace. All rights reserved.
