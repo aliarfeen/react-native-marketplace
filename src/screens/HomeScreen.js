@@ -1,7 +1,7 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 
-// Simple Home component in JavaScript (no TypeScript)
-export default function Home() {
+const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.container}>
@@ -10,7 +10,9 @@ export default function Home() {
       </View>
     </SafeAreaView>
   );
-}
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   safe: {
