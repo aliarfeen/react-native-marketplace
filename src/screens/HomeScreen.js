@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 const HomeScreen = () => {
   return (
@@ -17,7 +16,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#6d3535ff',
   },
   container: {
     flex: 1,
