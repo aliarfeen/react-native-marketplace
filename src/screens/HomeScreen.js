@@ -1,37 +1,40 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { ScrollView } from "react-native-web";
+import CategoryToggle from "../components/Home/CategoryToggle";
+import Navbar from "../components/Home/NavBar";
+import ProductCard from "../components/Home/ProductCard";
 
 const HomeScreen = () => {
+  const [activeCategory, setActiveCategory] = useState("electronics");
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://fakestoreapi.com/products/category/${activeCategory}`)
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.error(error));
+  }, [activeCategory]); // fetch only when category changes
+
   return (
-    <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Welcome to the Home Screen</Text>
-        <Text style={styles.subtitle}>This is a simple text-only React Native screen.</Text>
+    <ScrollView className="p-5">
+      <Navbar />  
+      
+      <Text className="text-xl font-bold text-gray-800 mt-4">Hello John Doe!</Text>
+      <Text className="text-base text-gray-600 mb-4">Let's start shopping!</Text>
+
+      <CategoryToggle
+        activeCategory={activeCategory}
+        onChange={(cat) => setActiveCategory(cat)}
+      />
+
+      <View className="grid grid-cols-2 gap-4 mt-4 w-full">
+        {data.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#6d3535ff',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#444',
-    textAlign: 'center',
-  },
-});
