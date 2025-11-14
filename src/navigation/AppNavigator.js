@@ -1,45 +1,44 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from '../screens/LoginScreen';
-import HomeScreen from '../screens/HomeScreen';
-import ProductDetailsScreen from '../screens/ProductDetailsScreen';
-import CartScreen from '../screens/CartScreen';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
 
-const Stack = createNativeStackNavigator();
+import HomeScreen from "../screens/HomeScreen";
+import CartScreen from "../screens/CartScreen";
+
+const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerStyle: { backgroundColor: '#ff9900ff' },
-          headerTintColor: '#fff',
-          headerTitleStyle: { fontWeight: 'bold' },
-        }}
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Home") {
+              iconName = focused ? "home" : "home-outline";
+            } else if (route.name === "Cart") {
+              iconName = focused ? "cart" : "cart-outline";
+            }
+
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: "#F16A26",
+          tabBarInactiveTintColor: "gray",
+          tabBarShowLabel: false,
+          headerShown: false,
+        })}
       >
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ title: 'Login' }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: 'Home' }}
-        />
-        <Stack.Screen
-          name="ProductDetails"
-          component={ProductDetailsScreen}
-          options={{ title: 'Product Details' }}
-        />
-        <Stack.Screen
+        <Tab.Screen name="Home" component={HomeScreen} />
+
+        <Tab.Screen
           name="Cart"
           component={CartScreen}
-          options={{ title: 'My Cart' }}
+          options={{ tabBarStyle: { display: "none" } }}
         />
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
