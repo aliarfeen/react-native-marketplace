@@ -1,10 +1,10 @@
-import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCredentials } from '../redux/slices/authSlice';
-import { fakeStoreApi } from '../api/fakeStoreApi';
-import { storage } from '../utils/storage';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fakeStoreApi } from '../api/fakeStoreApi';
+import { setCredentials } from '../redux/slices/authSlice';
+import { storage } from '../utils/storage';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -50,7 +50,8 @@ const LoginScreen = ({ navigation }) => {
         await storage.saveToken(response.token);
         
         dispatch(setCredentials({ user, token: response.token }));
-        navigation.replace('Home');
+        navigation.replace("MainTabs");
+
       }
     } catch (error) {
       Alert.alert('Login Failed', 'Invalid username or password');
