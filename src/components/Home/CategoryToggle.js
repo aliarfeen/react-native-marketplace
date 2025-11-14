@@ -9,7 +9,7 @@ const CategoryToggle = ({ activeCategory, onChange }) => {
   ];
 
   return (
-    <View className="flex flex-row justify-center items-center">
+    <View className="flex flex-row justify-between items-center">
       {categories.map((cat) => {
         const isSelected = cat.id === activeCategory;
 
