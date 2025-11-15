@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
+import { CustomToast } from "../components/CustomToast"; 
 import styles from "../styles/screens/cartStyles";
 
 export default function CartScreen({ navigation }) {
@@ -41,6 +42,7 @@ export default function CartScreen({ navigation }) {
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
 
+  
   const showToast = (type, text1, text2) => {
     Toast.show({ type, text1, text2, visibilityTime: 2000 });
   };
@@ -73,9 +75,10 @@ export default function CartScreen({ navigation }) {
     if (cartItems.length === 0) return;
 
     setLoading(true);
-
     try {
-      const response = await fetch("https://fakestoreapi.com/carts", {
+      const response = await fetch("http://localhost:3000/carts", {
+
+        //http://10.0.2.2:3000/carts for android 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -92,12 +95,12 @@ export default function CartScreen({ navigation }) {
 
       if (response.ok) {
         setCartItems([]);
-        showToast("success", "Order Placed", data.message || "Thank you for your purchase!");
+        showToast("success", "Order Placed", "Cart sent to API!");
       } else {
-        showToast("error", "Error", data.message || "Something went wrong");
+        showToast("error", "Error", "Failed to send cart");
       }
     } catch (error) {
-      showToast("error", "Network Error", "Check your internet connection");
+      showToast("error", "Network Error", "Check your connection");
     } finally {
       setLoading(false);
     }
@@ -119,13 +122,19 @@ export default function CartScreen({ navigation }) {
 
         <View style={styles.bottomRow}>
           <View style={styles.qtyContainer}>
-            <TouchableOpacity onPress={() => decreaseQty(item.id)} style={styles.qtyButton}>
+            <TouchableOpacity
+              onPress={() => decreaseQty(item.id)}
+              style={styles.qtyButton}
+            >
               <Text style={styles.qtySymbol}>–</Text>
             </TouchableOpacity>
 
             <Text style={styles.qtyNumber}>{item.qty}</Text>
 
-            <TouchableOpacity onPress={() => increaseQty(item.id)} style={styles.qtyButton}>
+            <TouchableOpacity
+              onPress={() => increaseQty(item.id)}
+              style={styles.qtyButton}
+            >
               <Text style={styles.qtySymbol}>+</Text>
             </TouchableOpacity>
           </View>
@@ -147,7 +156,6 @@ export default function CartScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back-outline" size={28} color="#000" />
         </TouchableOpacity>
-
         <Text style={styles.headerTitle}>My Cart</Text>
         <View style={{ width: 28 }} />
       </View>
@@ -205,6 +213,9 @@ export default function CartScreen({ navigation }) {
           </View>
         </View>
       )}
+
+      {/* Custom Toast */}
+      <Toast config={CustomToast} />
     </SafeAreaView>
   );
 }

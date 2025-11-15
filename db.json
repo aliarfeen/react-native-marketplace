@@ -1,0 +1,60 @@
+{
+  "carts": [
+    {
+      "id": "e2c9",
+      "userId": 1,
+      "date": "2025-11-15T03:53:19.766Z",
+      "products": [
+        {
+          "productId": 21,
+          "quantity": 1
+        },
+        {
+          "productId": 22,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "id": "8a70",
+      "userId": 1,
+      "date": "2025-11-15T03:58:04.158Z",
+      "products": [
+        {
+          "productId": 21,
+          "quantity": 1
+        },
+        {
+          "productId": 22,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "id": "f9af",
+      "userId": 1,
+      "date": "2025-11-15T03:58:58.020Z",
+      "products": [
+        {
+          "productId": 22,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "id": "0d77",
+      "userId": 1,
+      "date": "2025-11-15T04:16:57.552Z",
+      "products": [
+        {
+          "productId": 21,
+          "quantity": 1
+        },
+        {
+          "productId": 22,
+          "quantity": 2
+        }
+      ]
+    }
+  ]
+}
