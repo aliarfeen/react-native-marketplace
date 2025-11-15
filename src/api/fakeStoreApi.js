@@ -21,6 +21,11 @@ export const fakeStoreApi = {
     }
   },
 
+    getUserById: async (id) => {
+    const response = await fetch(`${BASE_URL}/users/${id}`);
+    return await response.json();
+  },
+
   // Get all products
   getProducts: async () => {
     try {
