@@ -62,7 +62,7 @@ const LoginScreen = ({ navigation }) => {
 
   if (response.token) {
     const decodedToken = jwtDecode(response.token);
-    const userId = decodedToken.sub;   // ✅ Correct way
+    const userId = decodedToken.sub; 
 
     console.log("Decoded Token:", decodedToken);
     console.log("User ID:", userId);

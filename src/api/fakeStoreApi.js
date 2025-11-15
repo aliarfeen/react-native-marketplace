@@ -20,7 +20,7 @@ export const fakeStoreApi = {
       throw error;
     }
   },
-
+  // new method to get user by id 
     getUserById: async (id) => {
     const response = await fetch(`${BASE_URL}/users/${id}`);
     return await response.json();
