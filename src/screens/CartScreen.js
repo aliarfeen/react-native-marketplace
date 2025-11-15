@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
-import { CustomToast } from "../components/CustomToast"; 
+import { CustomToast } from "../components/CustomToast";
 import styles from "../styles/screens/cartStyles";
 
 export default function CartScreen({ navigation }) {
@@ -42,7 +42,6 @@ export default function CartScreen({ navigation }) {
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-  
   const showToast = (type, text1, text2) => {
     Toast.show({ type, text1, text2, visibilityTime: 2000 });
   };
@@ -76,9 +75,7 @@ export default function CartScreen({ navigation }) {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/carts", {
-
-        //http://10.0.2.2:3000/carts for android 
+      const response = await fetch("https://fakestoreapi.com/carts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -149,7 +146,11 @@ export default function CartScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
 
       {/* Header */}
       <View style={styles.header}>
@@ -161,9 +162,18 @@ export default function CartScreen({ navigation }) {
       </View>
 
       {cartItems.length === 0 ? (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
           <Icon name="cart-outline" size={80} color="#ccc" />
-          <Text style={{ marginTop: 15, fontSize: 20, color: "#555", fontWeight: "500" }}>
+          <Text
+            style={{
+              marginTop: 15,
+              fontSize: 20,
+              color: "#555",
+              fontWeight: "500",
+            }}
+          >
             Your cart is empty
           </Text>
           <Text style={{ marginTop: 5, fontSize: 16, color: "#888" }}>
@@ -202,7 +212,12 @@ export default function CartScreen({ navigation }) {
             </View>
 
             {loading ? (
-              <View style={[styles.buyBtn, { justifyContent: "center", alignItems: "center" }]}>
+              <View
+                style={[
+                  styles.buyBtn,
+                  { justifyContent: "center", alignItems: "center" },
+                ]}
+              >
                 <ActivityIndicator size="small" color="#fff" />
               </View>
             ) : (
