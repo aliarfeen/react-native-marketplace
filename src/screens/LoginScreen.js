@@ -105,6 +105,7 @@ const LoginScreen = ({ navigation }) => {
           </Text>
           <TextInput
             className="w-full px-4 py-3 bg-gray-100 rounded-xl"
+            style={{ borderWidth: 0, outlineWidth: 0 }}
             placeholder="Enter your username"
             value={username}
             onChangeText={setUsername}
@@ -120,6 +121,7 @@ const LoginScreen = ({ navigation }) => {
           </Text>
           <TextInput
             className="w-full px-4 py-3 bg-gray-100 rounded-xl"
+            style={{ borderWidth: 0, outlineWidth: 0 }}
             placeholder="Enter your password"
             value={password}
             onChangeText={setPassword}
@@ -144,14 +146,6 @@ const LoginScreen = ({ navigation }) => {
           )}
         </TouchableOpacity>
 
-        {/* Helper Text */}
-        <View className="mt-8 bg-blue-50 p-4 rounded-xl">
-          <Text className="text-xs text-gray-600 text-center">
-            Test Credentials:{'\n'}
-            Username: mor_2314{'\n'}
-            Password: 83r5^_
-          </Text>
-        </View>
       </View>
 
       <Toast />

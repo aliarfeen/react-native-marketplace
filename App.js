@@ -6,13 +6,12 @@ import store from './src/redux/store';
 import Toast from "react-native-toast-message";
 import { CustomToast } from "./src/components/CustomToast";
 import { loadWishlistFromStorage } from './src/redux/slices/wishlistSlice';
-
-// Component داخلي عشان نقدر نستخدم الـ dispatch
+// استيراد الـ store و الـ Provider من react-redux
 function AppContent() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // تحميل الـ wishlist من AsyncStorage عند فتح التطبيق
+// تحميل الـ wishlist من التخزين المحلي عند بدء التطبيق
     dispatch(loadWishlistFromStorage());
   }, [dispatch]);
 

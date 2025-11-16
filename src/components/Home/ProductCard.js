@@ -7,8 +7,7 @@ import { addToWishlist, removeFromWishlist } from '../../redux/slices/wishlistSl
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const wishlistItems = useSelector((state) => state.wishlist.items);
-  
-  // تحقق لو المنتج موجود في الـ wishlist
+// التحقق مما إذا كان المنتج في الـ wishlist  
   const isFavorite = wishlistItems.some(item => item.id === product.id);
 
   const toggleFavorite = () => {

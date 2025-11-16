@@ -20,7 +20,7 @@ const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState,
   reducers: {
-    // تحميل الـ wishlist من AsyncStorage
+   //تحميل الـ wishlist من التخزين المحلي
     loadWishlist: (state, action) => {
       state.items = action.payload;
     },
