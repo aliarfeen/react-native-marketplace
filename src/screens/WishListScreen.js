@@ -1,13 +1,141 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-web'
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector, useDispatch } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
+import { removeFromWishlist, clearWishlist } from '../redux/slices/wishlistSlice';
+import Toast from 'react-native-toast-message';
 
-const WishListScreen = () => {
+const WishListScreen = ({ navigation }) => {
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  const dispatch = useDispatch();
+
+  const handleRemove = (id) => {
+    dispatch(removeFromWishlist(id));
+    Toast.show({
+      type: 'success',
+      text1: 'Removed from Wishlist',
+      text2: 'Item has been removed from your wishlist',
+      visibilityTime: 2000,
+    });
+  };
+
+  const handleClearAll = () => {
+    dispatch(clearWishlist());
+    Toast.show({
+      type: 'info',
+      text1: 'Wishlist Cleared',
+      text2: 'All items have been removed',
+      visibilityTime: 2000,
+    });
+  };
+
+  const renderItem = ({ item }) => (
+    <View className="bg-white rounded-2xl p-4 mb-4 mx-4 shadow-sm flex-row">
+      <View className="w-24 h-24 bg-gray-100 rounded-xl items-center justify-center mr-4">
+        <Image
+          source={{ uri: item.image }}
+          className="w-20 h-20"
+          resizeMode="contain"
+        />
+      </View>
+
+      <View className="flex-1 justify-between">
+        <View>
+          <Text className="text-base font-bold text-gray-800" numberOfLines={2}>
+            {item.title}
+          </Text>
+          <Text className="text-xs text-gray-500 mt-1" numberOfLines={1}>
+            {item.category}
+          </Text>
+        </View>
+
+        <View className="flex-row items-center justify-between mt-2">
+          <Text className="text-lg font-bold text-orange-500">
+            ${item.price}
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => handleRemove(item.id)}
+            className="bg-red-50 rounded-full p-2"
+          >
+            <Ionicons name="trash-outline" size={20} color="#EF4444" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
+  if (wishlistItems.length === 0) {
+    return (
+      <SafeAreaView className="flex-1 bg-gray-50">
+        <View className="px-6 py-4 bg-white">
+          <Text className="text-2xl font-bold text-gray-800">My Wishlist</Text>
+        </View>
+
+        <View className="flex-1 items-center justify-center px-6">
+          <View className="bg-gray-100 rounded-full p-8 mb-6">
+            <Ionicons name="heart-outline" size={80} color="#D1D5DB" />
+          </View>
+          <Text className="text-xl font-bold text-gray-800 mb-2">
+            Your Wishlist is Empty
+          </Text>
+          <Text className="text-base text-gray-500 text-center mb-8">
+            Save your favorite items here and never lose track of what you love!
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Home')}
+            className="bg-orange-500 px-8 py-4 rounded-xl"
+          >
+            <Text className="text-white font-bold text-base">
+              Start Shopping
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <Toast />
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <SafeAreaView>
-      <Text>WishListScreen</Text>
-    </SafeAreaView>
-  )
-}
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <View className="px-6 py-4 bg-white flex-row items-center justify-between">
+        <View>
+          <Text className="text-2xl font-bold text-gray-800">My Wishlist</Text>
+          <Text className="text-sm text-gray-500 mt-1">
+            {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'}
+          </Text>
+        </View>
 
-export default WishListScreen
+        {wishlistItems.length > 0 && (
+          <TouchableOpacity
+            onPress={handleClearAll}
+            className="bg-red-50 px-4 py-2 rounded-lg"
+          >
+            <Text className="text-red-500 font-semibold text-sm">Clear All</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      <FlatList
+        data={wishlistItems}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={{ paddingTop: 16, paddingBottom: 20 }}
+        showsVerticalScrollIndicator={false}
+      />
+
+      <Toast />
+    </SafeAreaView>
+  );
+};
+
+export default WishListScreen;

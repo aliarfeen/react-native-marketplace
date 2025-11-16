@@ -92,16 +92,17 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View className="flex-1 bg-white px-6 justify-center">
       <View className="mb-8">
-        <Text className="text-4xl font-bold text-gray-800 mb-2">Welcome!</Text>
-        <Text className="text-gray-500 text-base">Sign in to continue</Text>
+        <Text className="text-4xl font-bold text-gray-800 mb-2 text-center">Welcome!</Text>
+        <Text className="text-gray-500 text-base text-center">Sign in to continue</Text>
       </View>
 
       <View className="mb-4">
         <Text className="text-gray-700 mb-2 font-medium">Username</Text>
-        <View className="bg-gray-100 rounded-xl px-4 py-3 flex-row items-center">
+        <View className="bg-gray-100 rounded-xl px-4 py-3 flex-row items-center ">
           <Ionicons name="person-outline" size={20} color="#9ca3af" />
           <TextInput
-            className="flex-1 ml-2 text-base"
+            className="flex-1 ml-2 text-base "
+             style={{ borderWidth: 0, outlineWidth: 0 }}
             placeholder="Enter username"
             value={username}
             onChangeText={setUsername}
@@ -116,6 +117,7 @@ const LoginScreen = ({ navigation }) => {
           <Ionicons name="lock-closed-outline" size={20} color="#9ca3af" />
           <TextInput
             className="flex-1 ml-2 text-base"
+             style={{ borderWidth: 0, outlineWidth: 0 }}
             placeholder="Enter password"
             value={password}
             onChangeText={setPassword}
