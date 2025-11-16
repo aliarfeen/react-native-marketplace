@@ -12,6 +12,7 @@ import WishListScreen from "../screens/WishListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import LoginScreen from "../screens/LoginScreen";
 import CartScreen from './../screens/CartScreen';
+import EditProfileScreen from './../screens/EditProfileScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -110,6 +111,8 @@ export default function AppNavigator() {
           component={CartScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
