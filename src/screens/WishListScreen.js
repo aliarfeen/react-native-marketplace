@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector, useDispatch } from 'react-redux';
@@ -73,40 +72,28 @@ const WishListScreen = ({ navigation }) => {
     </View>
   );
 
-  if (wishlistItems.length === 0) {
-    return (
-      <SafeAreaView className="flex-1 bg-gray-50">
-        <View className="px-6 py-4 bg-white">
-          <Text className="text-2xl font-bold text-gray-800">My Wishlist</Text>
-        </View>
-
-        <View className="flex-1 items-center justify-center px-6">
-          <View className="bg-gray-100 rounded-full p-8 mb-6">
-            <Ionicons name="heart-outline" size={80} color="#D1D5DB" />
-          </View>
-          <Text className="text-xl font-bold text-gray-800 mb-2">
-            Your Wishlist is Empty
-          </Text>
-          <Text className="text-base text-gray-500 text-center mb-8">
-            Save your favorite items here and never lose track of what you love!
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Home')}
-            className="bg-orange-500 px-8 py-4 rounded-xl"
-          >
-            <Text className="text-white font-bold text-base">
-              Start Shopping
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <Toast />
-      </SafeAreaView>
-    );
-  }
+  // Empty State
+  const EmptyWishlist = () => (
+    <View className="flex-1 justify-center items-center px-8">
+      <Ionicons name="heart-outline" size={80} color="#D1D5DB" />
+      <Text className="text-xl font-bold text-gray-800 mt-6">
+        Your Wishlist is Empty
+      </Text>
+      <Text className="text-sm text-gray-500 mt-2 text-center">
+        Start adding items you love to your wishlist
+      </Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Home')}
+        className="mt-6 bg-orange-500 px-8 py-3 rounded-full"
+      >
+        <Text className="text-white font-semibold">Start Shopping</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
+      {/* Header */}
       <View className="px-6 py-4 bg-white flex-row items-center justify-between">
         <View>
           <Text className="text-2xl font-bold text-gray-800">My Wishlist</Text>
@@ -125,13 +112,22 @@ const WishListScreen = ({ navigation }) => {
         )}
       </View>
 
-      <FlatList
-        data={wishlistItems}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingTop: 16, paddingBottom: 20 }}
-        showsVerticalScrollIndicator={false}
-      />
+      {/* Content */}
+      {wishlistItems.length === 0 ? (
+        <EmptyWishlist />
+      ) : (
+        <FlatList
+          data={wishlistItems}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingTop: 16,
+            paddingBottom: 20,
+          }}
+          style={{ flex: 1 }}
+        />
+      )}
 
       <Toast />
     </SafeAreaView>

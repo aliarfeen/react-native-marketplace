@@ -1,21 +1,48 @@
-import { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Toast from 'react-native-toast-message';
+import { addToWishlist, removeFromWishlist } from '../../redux/slices/wishlistSlice';
 
 const ProductCard = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  
+  // تحقق لو المنتج موجود في الـ wishlist
+  const isFavorite = wishlistItems.some(item => item.id === product.id);
 
   const toggleFavorite = () => {
-    setIsFavorite(prev => !prev);
-    console.log(`Toggled favorite for: ${product.title}`);
+    if (isFavorite) {
+      dispatch(removeFromWishlist(product.id));
+      Toast.show({
+        type: 'info',
+        text1: 'Removed from Wishlist',
+        text2: `${product.title} has been removed`,
+        visibilityTime: 2000,
+      });
+    } else {
+      dispatch(addToWishlist(product));
+      Toast.show({
+        type: 'success',
+        text1: 'Added to Wishlist',
+        text2: `${product.title} has been added`,
+        visibilityTime: 2000,
+      });
+    }
   };
 
   const addToCart = () => {
     console.log(`Added to cart: ${product.title}`);
+    Toast.show({
+      type: 'success',
+      text1: 'Added to Cart',
+      text2: `${product.title} added successfully`,
+      visibilityTime: 2000,
+    });
   };
 
   const heartIcon = isFavorite ? "heart" : "heart-outline";
-  const iconColor = isFavorite ? "orange" : "gray";
+  const iconColor = isFavorite ? "#EF4444" : "gray";
 
   return (
     <TouchableOpacity
@@ -43,10 +70,14 @@ const ProductCard = ({ product }) => {
         />
 
         <View className="w-full mt-2">
-          <Text className="text-sm text-center text-gray-800 line-clamp-1">{product.title}</Text>
+          <Text className="text-sm text-center text-gray-800 line-clamp-1">
+            {product.title}
+          </Text>
           
           <View className="flex-row items-center justify-between mt-1">
-            <Text className="text-base font-bold text-gray-900">${product.price}</Text>
+            <Text className="text-base font-bold text-gray-900">
+              ${product.price}
+            </Text>
 
             <TouchableOpacity 
               className="px-2 py-1 bg-orange-500 rounded-lg"

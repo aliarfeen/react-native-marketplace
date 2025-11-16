@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useSelector } from "react-redux";
+import { View, Text, ActivityIndicator } from "react-native";
+import storage from "../utils/storage";
 
 // Import screens
 import HomeScreen from "../screens/HomeScreen";
@@ -21,6 +24,8 @@ const Stack = createNativeStackNavigator();
 // Bottom Tabs
 // -------------------
 function Tabs() {
+  const wishlistCount = useSelector((state) => state.wishlist.items.length);
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -45,11 +50,40 @@ function Tabs() {
               );
             case "Wishlist":
               return (
-                <Icon
-                  name={focused ? "heart" : "heart-outline"}
-                  size={size}
-                  color={color}
-                />
+                <View style={{ position: "relative" }}>
+                  <Icon
+                    name={focused ? "heart" : "heart-outline"}
+                    size={size}
+                    color={color}
+                  />
+                  {/* Badge للعد */}
+                  {wishlistCount > 0 && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        top: -6,
+                        right: -10,
+                        backgroundColor: "#EF4444",
+                        minWidth: 18,
+                        height: 18,
+                        borderRadius: 9,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingHorizontal: 4,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 10,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {wishlistCount > 99 ? '99+' : wishlistCount}
+                      </Text>
+                    </View>
+                  )}
+                </View>
               );
             case "Profile":
               return (
@@ -59,6 +93,8 @@ function Tabs() {
                   color={color}
                 />
               );
+            default:
+              return null;
           }
         },
         tabBarActiveTintColor: "#F16A26",
@@ -88,12 +124,39 @@ function Tabs() {
 // Stack Navigator
 // -------------------
 export default function AppNavigator() {
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  const checkLoginStatus = async () => {
+    try {
+      const user = await storage.getUser();
+      setIsLoggedIn(!!user);
+    } catch (error) {
+      console.error('Error checking login:', error);
+      setIsLoggedIn(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#F16A26" />
+      </View>
+    );
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName={isLoggedIn ? "MainTabs" : "Login"}
         screenOptions={{
-          headerShown:false,
+          headerShown: false,
           headerStyle: { backgroundColor: "#ff9900ff" },
           headerTintColor: "#fff",
           headerTitleStyle: { fontWeight: "bold" },
@@ -105,14 +168,16 @@ export default function AppNavigator() {
           component={Tabs}
           options={{ headerShown: false }}
         />
-
         <Stack.Screen
           name="Cart"
           component={CartScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
-
+        <Stack.Screen 
+          name="EditProfile" 
+          component={EditProfileScreen} 
+          options={{ headerShown: false }} 
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
