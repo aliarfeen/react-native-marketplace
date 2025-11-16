@@ -69,6 +69,31 @@ export const fakeStoreApi = {
       throw error;
     }
   },
-};
+
+
+  //updateUser
+updateUser: async (id, data) => {
+    try {
+      const response = await fetch(`${BASE_URL}/users/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("API response not ok: " + response.status);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("API updateUser error:", error);
+      throw error;
+    }
+}
+
+
+}
 
 export default fakeStoreApi;
