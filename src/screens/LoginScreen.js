@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import jwtDecode from "jwt-decode";
-
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -58,40 +57,41 @@ const LoginScreen = ({ navigation }) => {
     setLoading(true);
 
     try {
-      const response = await fakeStoreApi.login(username, password);
-      console.log("Login response:", response);
+  const response = await fakeStoreApi.login(username, password);
+  console.log("Login response:", response);
 
-      if (response.token) {
-        const decodedToken = jwtDecode(response.token);
-        const userId = decodedToken.sub;
+  if (response.token) {
+    const decodedToken = jwtDecode(response.token);
+    const userId = decodedToken.sub;   
 
-        console.log("Decoded Token:", decodedToken);
-        console.log("User ID:", userId);
+    console.log("Decoded Token:", decodedToken);
+    console.log("User ID:", userId);
 
-        const userData = await fakeStoreApi.getUserById(userId);
-        console.log("Fetched user data:", userData);
+    const userData = await fakeStoreApi.getUserById(userId);
+    console.log("Fetched user data:", userData);
 
-        await storage.saveUser(userData);
-        await storage.saveToken(response.token);
+    await storage.saveUser(userData);
+    await storage.saveToken(response.token);
 
-        dispatch(
-          setCredentials({
-            user: userData,
-            sub: userId,
-            token: response.token,
-          })
-        );
+    dispatch(
+      setCredentials({
+        user: userData,
+        sub: userId,
+        token: response.token,
+      })
+    );
 
-        navigation.replace("MainTabs");
-      }
-    } catch (error) {
-      Alert.alert("Login Failed", "Invalid username or password");
-    }
+    navigation.replace("MainTabs");
+  }
+} catch (error) {
+  Alert.alert("Login Failed", "Invalid username or password");
+}
+
   };
 
   return (
     <View className="flex-1 bg-white px-6 justify-center">
-      <View className="mb-8 justify-center items-center ">
+      <View className="mb-8">
         <Text className="text-4xl font-bold text-gray-800 mb-2">Welcome!</Text>
         <Text className="text-gray-500 text-base">Sign in to continue</Text>
       </View>
@@ -106,12 +106,6 @@ const LoginScreen = ({ navigation }) => {
             value={username}
             onChangeText={setUsername}
             autoCapitalize="none"
-            underlineColorAndroid="transparent"
-            style={{
-              borderWidth: 0,
-              outlineStyle: "none",
-              backgroundColor: "transparent", 
-            }}
           />
         </View>
       </View>
@@ -127,12 +121,6 @@ const LoginScreen = ({ navigation }) => {
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
             autoCapitalize="none"
-            underlineColorAndroid="transparent" 
-            style={{
-              borderWidth: 0,
-              outlineStyle: "none", 
-              backgroundColor: "transparent", 
-            }}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Ionicons
@@ -145,10 +133,9 @@ const LoginScreen = ({ navigation }) => {
       </View>
 
       <TouchableOpacity
-        className=" rounded-xl py-4 items-center shadow-sm"
+        className="bg-orange-500 rounded-xl py-4 items-center shadow-sm"
         onPress={handleLogin}
         disabled={loading}
-        style={{ backgroundColor: "#F16A26" }}
       >
         {loading ? (
           <ActivityIndicator color="white" />
