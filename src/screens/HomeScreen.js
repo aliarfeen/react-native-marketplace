@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import { ScrollView } from "react-native-web";
+import { ScrollView, Text, View } from "react-native";
 import Toast from 'react-native-toast-message';
 import CategoryToggle from "../components/Home/CategoryToggle";
 import Navbar from "../components/Home/NavBar";
