@@ -52,38 +52,95 @@ const SearchScreen = () => {
 
   const renderProductItem = ({ item }) => (
     <TouchableOpacity
-      className="flex-row items-center p-3 border-b border-gray-100"
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        padding: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: "#E5E7EB",
+      }}
       onPress={() =>
         navigation.navigate("ProductDetails", { productId: item.id })
       }
     >
       <Image
         source={{ uri: item.image }}
-        className="w-16 h-16 mr-3 rounded-md"
+        style={{
+          width: 64,
+          height: 64,
+          marginRight: 12,
+          borderRadius: 8,
+        }}
         resizeMode="contain"
       />
-      <View className="flex-1">
-        <Text className="font-medium text-gray-800" numberOfLines={1}>
+
+      <View style={{ flex: 1 }}>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "500",
+            color: "#1F2937",
+          }}
+          numberOfLines={1}
+        >
           {item.title}
         </Text>
-        <Text className="text-sm text-gray-500 capitalize">
+
+        <Text
+          style={{
+            fontSize: 13,
+            color: "#6B7280",
+            textTransform: "capitalize",
+          }}
+        >
           {item.category}
         </Text>
-        <Text className="font-bold text-orange-500">
+
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            color: "#F97316",
+          }}
+        >
           ${item.price.toFixed(2)}
         </Text>
       </View>
+
       <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
     </TouchableOpacity>
   );
 
   const renderEmptyState = () => (
-    <View className="flex-1 justify-center items-center mt-20">
+    <View
+      style={{
+        flex: 1,
+        marginTop: 40,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Ionicons name="search" size={60} color="#D1D5DB" />
-      <Text className="text-lg font-medium text-gray-500 mt-4">
+
+      <Text
+        style={{
+          fontSize: 18,
+          fontWeight: "500",
+          color: "#6B7280",
+          marginTop: 12,
+        }}
+      >
         {searchQuery ? "No products found" : "Search for products"}
       </Text>
-      <Text className="text-gray-400 text-center mt-2 px-10">
+
+      <Text
+        style={{
+          marginTop: 8,
+          paddingHorizontal: 40,
+          textAlign: "center",
+          color: "#9CA3AF",
+        }}
+      >
         {searchQuery
           ? "Try different keywords or check for typos"
           : "Find products by name, category, or description"}
@@ -92,19 +149,35 @@ const SearchScreen = () => {
   );
 
   return (
-    <View className="flex-1 bg-white">
+    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       {/* Search Bar */}
-      <View className="p-4 bg-white">
-        <View className="flex-row items-center bg-gray-100 rounded-lg px-3 py-2">
+      <View style={{ padding: 16, backgroundColor: "#FFFFFF" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "#F3F4F6",
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+          }}
+        >
           <Ionicons name="search" size={20} color="#6B7280" />
+
           <TextInput
-            className="flex-1 ml-2 text-gray-700"
+            style={{
+              flex: 1,
+              marginLeft: 8,
+              fontSize: 16,
+              color: "#374151",
+            }}
             placeholder="Search for products..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             autoCapitalize="none"
             autoCorrect={false}
           />
+
           {searchQuery !== "" && (
             <TouchableOpacity onPress={() => setSearchQuery("")}>
               <Ionicons name="close-circle" size={20} color="#9CA3AF" />
@@ -113,9 +186,15 @@ const SearchScreen = () => {
         </View>
       </View>
 
-      {/* Search Results */}
+      {/* Product List */}
       {isLoading ? (
-        <View className="flex-1 justify-center items-center">
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ActivityIndicator size="large" color="#F16A26" />
         </View>
       ) : (
