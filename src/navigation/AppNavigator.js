@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useSelector } from "react-redux";
-import { View, Text, ActivityIndicator } from "react-native";
 import storage from "../utils/storage";
 
 // Import screens
 import HomeScreen from "../screens/HomeScreen";
+import LoginScreen from "../screens/LoginScreen";
+import ProductDetailsScreen from "../screens/ProductDetailsScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import SearchScreen from "../screens/SearchScreen";
 import WishListScreen from "../screens/WishListScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import LoginScreen from "../screens/LoginScreen";
 import CartScreen from './../screens/CartScreen';
 import EditProfileScreen from './../screens/EditProfileScreen';
 
@@ -171,6 +172,11 @@ export default function AppNavigator() {
         <Stack.Screen
           name="Cart"
           component={CartScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ProductDetails"
+          component={ProductDetailsScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen 

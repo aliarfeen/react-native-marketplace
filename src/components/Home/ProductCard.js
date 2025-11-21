@@ -1,13 +1,15 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, removeFromWishlist } from '../../redux/slices/wishlistSlice';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const wishlistItems = useSelector((state) => state.wishlist.items);
-// التحقق مما إذا كان المنتج في الـ wishlist  
   const isFavorite = wishlistItems.some(item => item.id === product.id);
 
   const toggleFavorite = () => {
@@ -45,13 +47,13 @@ const ProductCard = ({ product }) => {
 
   return (
     <TouchableOpacity
-      className="w-[204px] h-[204px] overflow-scroll bg-[#F8F8F8] rounded-xl p-3 items-center"
+      style={styles.card}
       activeOpacity={0.8}
     >
-      <View className="relative w-full h-full items-center justify-between">
+      <View style={styles.cardInner}>
         
         <TouchableOpacity 
-          className="absolute top-0 right-0 z-10 w-8 h-8 rounded-full bg-white items-center justify-center shadow-sm"
+          style={styles.favoriteButton}
           onPress={toggleFavorite}
           activeOpacity={0.7}
         >
@@ -62,28 +64,33 @@ const ProductCard = ({ product }) => {
           />
         </TouchableOpacity>
 
-        <Image
-          source={{ uri: product.image }}
-          className="w-28 h-28 mt-2"
-          resizeMode="contain"
-        />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate('ProductDetails', { productId: product.id })}
+        >
+          <Image
+            source={{ uri: product.image }}
+            style={styles.productImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
 
-        <View className="w-full mt-2">
-          <Text className="text-sm text-center text-gray-800 line-clamp-1">
+        <View style={styles.infoWrapper}>
+          <Text style={styles.title} numberOfLines={1}>
             {product.title}
           </Text>
           
-          <View className="flex-row items-center justify-between mt-1">
-            <Text className="text-base font-bold text-gray-900">
+          <View style={styles.footerRow}>
+            <Text style={styles.price}>
               ${product.price}
             </Text>
 
             <TouchableOpacity 
-              className="px-2 py-1 bg-orange-500 rounded-lg"
+              style={styles.addButton}
               onPress={addToCart}
               activeOpacity={0.7}
             >
-              <Text className="text-xs font-semibold text-white">Add</Text>
+              <Text style={styles.addButtonText}>Add</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -91,5 +98,76 @@ const ProductCard = ({ product }) => {
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    width: "48%", // allow 2 cards per row in the grid
+    height: 180,
+    backgroundColor: "#F8F8F8",
+    borderRadius: 12,
+    padding: 12,
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  cardInner: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  favoriteButton: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    zIndex: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 2,
+  },
+  productImage: {
+    width: 80,
+    height: 80,
+    marginTop: 8,
+  },
+  infoWrapper: {
+    width: "100%",
+    marginTop: 8,
+  },
+  title: {
+    fontSize: 12,
+    textAlign: "center",
+    color: "#1F2937", 
+  },
+  footerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 4,
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111827", 
+  },
+  addButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    backgroundColor: "#F97316", // bg-orange-500
+    borderRadius: 8,
+  },
+  addButtonText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+});
 
 export default ProductCard;

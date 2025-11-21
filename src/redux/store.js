@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import wishlistReducer from '../redux/slices/wishlistSlice';
 import authReducer from './slices/authSlice';
 import homeReducer from './slices/homeSlice';
-import wishlistReducer from '../redux/slices/wishlistSlice';
 
 const store = configureStore({
   reducer: {

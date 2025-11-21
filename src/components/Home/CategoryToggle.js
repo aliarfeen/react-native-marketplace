@@ -1,5 +1,5 @@
 // CategoryToggle.jsx
-import { Pressable, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const CategoryToggle = ({ activeCategory, onChange }) => {
   const categories = [
@@ -9,7 +9,7 @@ const CategoryToggle = ({ activeCategory, onChange }) => {
   ];
 
   return (
-    <View className="flex flex-row justify-between items-center">
+    <View style={styles.container}>
       {categories.map((cat) => {
         const isSelected = cat.id === activeCategory;
 
@@ -17,14 +17,16 @@ const CategoryToggle = ({ activeCategory, onChange }) => {
           <Pressable
             key={cat.id}
             onPress={() => onChange(cat.id)}
-            className={`h-10 px-5 rounded-lg flex items-center justify-center ${
-              isSelected ? "bg-orange-500" : "bg-gray-200"
-            }`}
+            style={[
+              styles.toggleBase,
+              isSelected ? styles.toggleSelected : styles.toggleUnselected,
+            ]}
           >
             <Text
-              className={`text-lg font-semibold ${
-                isSelected ? "text-white" : "text-gray-600"
-              }`}
+              style={[
+                styles.toggleText,
+                isSelected ? styles.toggleTextSelected : styles.toggleTextUnselected,
+              ]}
             >
               {cat.label}
             </Text>
@@ -34,5 +36,36 @@ const CategoryToggle = ({ activeCategory, onChange }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  toggleBase: {
+    height: 40,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  toggleSelected: {
+    backgroundColor: "#F97316", // bg-orange-500
+  },
+  toggleUnselected: {
+    backgroundColor: "#E5E7EB", // bg-gray-200
+  },
+  toggleText: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  toggleTextSelected: {
+    color: "#FFFFFF",
+  },
+  toggleTextUnselected: {
+    color: "#4B5563", // text-gray-600
+  },
+});
 
 export default CategoryToggle;

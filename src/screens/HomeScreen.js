@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import { ScrollView } from "react-native-web";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
+import { BackHandler, ScrollView, StyleSheet, Text, View } from "react-native";
+
 import Toast from 'react-native-toast-message';
 import CategoryToggle from "../components/Home/CategoryToggle";
 import Navbar from "../components/Home/NavBar";
@@ -11,6 +12,25 @@ const HomeScreen = () => {
   const [activeCategory, setActiveCategory] = useState("electronics");
   const [data, setData] = useState([]);
   const [user, setUser] = useState(null);
+
+  //prevents back button to get back to previous screen
+ useFocusEffect(
+  useCallback(() => {
+    const onBackPress = () => {
+      BackHandler.exitApp();
+      return true; // prevent default
+    };
+
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+
+    return () => {
+      subscription.remove(); 
+    };
+  }, [])
+);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,13 +50,13 @@ const HomeScreen = () => {
 
   return (
     <>
-      <ScrollView className="p-5">
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         <Navbar />  
         
-        <Text className="text-xl font-bold text-gray-800 mt-4">
+        <Text style={styles.greetingText}>
           Hello {user?.username}!
         </Text>
-        <Text className="text-base text-gray-600 mb-4">
+        <Text style={styles.subtitleText}>
           Let's start shopping!
         </Text>
 
@@ -45,7 +65,7 @@ const HomeScreen = () => {
           onChange={(cat) => setActiveCategory(cat)}
         />
 
-        <View className="grid grid-cols-2 gap-4 mt-4 w-full">
+        <View style={styles.productsGrid}>
           {data.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -56,5 +76,30 @@ const HomeScreen = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollContent: {
+    padding: 20,
+  },
+  greetingText: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#1F2937", // text-gray-800
+    marginTop: 16,
+  },
+  subtitleText: {
+    fontSize: 16,
+    color: "#4B5563", // text-gray-600
+    marginBottom: 16,
+  },
+  productsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    
+    justifyContent: "space-between",
+    marginTop: 16,
+    width: "100%",
+  },
+});
 
 export default HomeScreen;

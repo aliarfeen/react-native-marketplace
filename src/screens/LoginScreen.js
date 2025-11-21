@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
+    ActivityIndicator,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
-import storage from '../utils/storage';
 import Toast from 'react-native-toast-message';
+import storage from '../utils/storage';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -86,27 +88,28 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 justify-center px-8">
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+
         {/* Logo/Title */}
-        <View className="items-center mb-12">
-          <Text className="text-4xl font-bold text-orange-500">
+        <View style={styles.logoWrapper}>
+          <Text style={styles.logoTitle}>
             MarketPlace
           </Text>
-          <Text className="text-gray-500 mt-2">
+          <Text style={styles.logoSubtitle}>
             Welcome back! Please login
           </Text>
         </View>
 
         {/* Username Input */}
-        <View className="mb-4">
-          <Text className="text-sm font-semibold text-gray-700 mb-2">
+        <View style={styles.fieldWrapper}>
+          <Text style={styles.fieldLabel}>
             Username
           </Text>
           <TextInput
-            className="w-full px-4 py-3 bg-gray-100 rounded-xl"
-            style={{ borderWidth: 0, outlineWidth: 0 }}
+            style={[styles.input, { borderWidth: 0, outlineWidth: 0 }]}
             placeholder="Enter your username"
+
             value={username}
             onChangeText={setUsername}
             autoCapitalize="none"
@@ -115,13 +118,12 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         {/* Password Input */}
-        <View className="mb-6">
-          <Text className="text-sm font-semibold text-gray-700 mb-2">
+        <View style={styles.fieldWrapperLarge}>
+          <Text style={styles.fieldLabel}>
             Password
           </Text>
           <TextInput
-            className="w-full px-4 py-3 bg-gray-100 rounded-xl"
-            style={{ borderWidth: 0, outlineWidth: 0 }}
+            style={[styles.input, { borderWidth: 0, outlineWidth: 0 }]}
             placeholder="Enter your password"
             value={password}
             onChangeText={setPassword}
@@ -132,15 +134,16 @@ const LoginScreen = ({ navigation }) => {
 
         {/* Login Button */}
         <TouchableOpacity
-          className="w-full py-4 bg-orange-500 rounded-xl items-center justify-center"
+          style={styles.loginButton}
           onPress={handleLogin}
+
           disabled={loading}
           activeOpacity={0.8}
         >
           {loading ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text className="text-white font-bold text-base">
+            <Text style={styles.loginButtonText}>
               Login
             </Text>
           )}
@@ -152,5 +155,62 @@ const LoginScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 32,
+  },
+  logoWrapper: {
+    alignItems: "center",
+    marginBottom: 48,
+  },
+  logoTitle: {
+    fontSize: 32,
+    fontWeight: "700",
+    color: "#F97316", // text-orange-500
+  },
+  logoSubtitle: {
+    marginTop: 8,
+    color: "#6B7280", // text-gray-500
+  },
+  fieldWrapper: {
+    marginBottom: 16,
+  },
+  fieldWrapperLarge: {
+    marginBottom: 24,
+  },
+  fieldLabel: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#374151", // text-gray-700
+    marginBottom: 8,
+  },
+  input: {
+    width: "100%",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#F3F4F6", // bg-gray-100
+    borderRadius: 16,
+  },
+  loginButton: {
+    width: "100%",
+    paddingVertical: 16,
+    backgroundColor: "#F97316", // bg-orange-500
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loginButtonText: {
+    color: "#FFFFFF",
+    fontWeight: "700",
+    fontSize: 16,
+  },
+});
 
 export default LoginScreen;

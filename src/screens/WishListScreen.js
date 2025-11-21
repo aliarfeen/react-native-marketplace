@@ -1,16 +1,17 @@
-import React from 'react';
 import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
   FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSelector, useDispatch } from 'react-redux';
+
 import { Ionicons } from '@expo/vector-icons';
-import { removeFromWishlist, clearWishlist } from '../redux/slices/wishlistSlice';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearWishlist, removeFromWishlist } from '../redux/slices/wishlistSlice';
 
 const WishListScreen = ({ navigation }) => {
   const wishlistItems = useSelector((state) => state.wishlist.items);
@@ -37,33 +38,33 @@ const WishListScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
-    <View className="bg-white rounded-2xl p-4 mb-4 mx-4 shadow-sm flex-row">
-      <View className="w-24 h-24 bg-gray-100 rounded-xl items-center justify-center mr-4">
+    <View style={styles.card}>
+      <View style={styles.cardImageWrapper}>
         <Image
           source={{ uri: item.image }}
-          className="w-20 h-20"
+          style={styles.cardImage}
           resizeMode="contain"
         />
       </View>
 
-      <View className="flex-1 justify-between">
+      <View style={styles.cardContent}>
         <View>
-          <Text className="text-base font-bold text-gray-800" numberOfLines={2}>
+          <Text style={styles.cardTitle} numberOfLines={2}>
             {item.title}
           </Text>
-          <Text className="text-xs text-gray-500 mt-1" numberOfLines={1}>
+          <Text style={styles.cardCategory} numberOfLines={1}>
             {item.category}
           </Text>
         </View>
 
-        <View className="flex-row items-center justify-between mt-2">
-          <Text className="text-lg font-bold text-orange-500">
+        <View style={styles.cardFooter}>
+          <Text style={styles.cardPrice}>
             ${item.price}
           </Text>
 
           <TouchableOpacity
             onPress={() => handleRemove(item.id)}
-            className="bg-red-50 rounded-full p-2"
+            style={styles.removeButton}
           >
             <Ionicons name="trash-outline" size={20} color="#EF4444" />
           </TouchableOpacity>
@@ -74,30 +75,30 @@ const WishListScreen = ({ navigation }) => {
 
   // Empty State
   const EmptyWishlist = () => (
-    <View className="flex-1 justify-center items-center px-8">
+    <View style={styles.emptyWrapper}>
       <Ionicons name="heart-outline" size={80} color="#D1D5DB" />
-      <Text className="text-xl font-bold text-gray-800 mt-6">
+      <Text style={styles.emptyTitle}>
         Your Wishlist is Empty
       </Text>
-      <Text className="text-sm text-gray-500 mt-2 text-center">
+      <Text style={styles.emptySubtitle}>
         Start adding items you love to your wishlist
       </Text>
       <TouchableOpacity
         onPress={() => navigation.navigate('Home')}
-        className="mt-6 bg-orange-500 px-8 py-3 rounded-full"
+        style={styles.emptyButton}
       >
-        <Text className="text-white font-semibold">Start Shopping</Text>
+        <Text style={styles.emptyButtonText}>Start Shopping</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView style={styles.safeArea}>
       {/* Header */}
-      <View className="px-6 py-4 bg-white flex-row items-center justify-between">
+      <View style={styles.header}>
         <View>
-          <Text className="text-2xl font-bold text-gray-800">My Wishlist</Text>
-          <Text className="text-sm text-gray-500 mt-1">
+          <Text style={styles.headerTitle}>My Wishlist</Text>
+          <Text style={styles.headerSubtitle}>
             {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'}
           </Text>
         </View>
@@ -105,9 +106,9 @@ const WishListScreen = ({ navigation }) => {
         {wishlistItems.length > 0 && (
           <TouchableOpacity
             onPress={handleClearAll}
-            className="bg-red-50 px-4 py-2 rounded-lg"
+            style={styles.clearAllButton}
           >
-            <Text className="text-red-500 font-semibold text-sm">Clear All</Text>
+            <Text style={styles.clearAllButtonText}>Clear All</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -121,11 +122,8 @@ const WishListScreen = ({ navigation }) => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingTop: 16,
-            paddingBottom: 20,
-          }}
-          style={{ flex: 1 }}
+          contentContainerStyle={styles.listContent}
+          style={styles.list}
         />
       )}
 
@@ -133,5 +131,133 @@ const WishListScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#F9FAFB', // bg-gray-50
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1F2937', // text-gray-800
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    color: '#6B7280', // text-gray-500
+    marginTop: 4,
+  },
+  clearAllButton: {
+    backgroundColor: '#FEF2F2', // bg-red-50
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  clearAllButtonText: {
+    color: '#EF4444',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 1,
+  },
+  cardImageWrapper: {
+    width: 96,
+    height: 96,
+    backgroundColor: '#F3F4F6', // bg-gray-100
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  cardImage: {
+    width: 80,
+    height: 80,
+  },
+  cardContent: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1F2937', // text-gray-800
+  },
+  cardCategory: {
+    fontSize: 12,
+    color: '#6B7280', // text-gray-500
+    marginTop: 4,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  cardPrice: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#F97316', // text-orange-500
+  },
+  removeButton: {
+    backgroundColor: '#FEF2F2',
+    borderRadius: 9999,
+    padding: 8,
+  },
+  emptyWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  emptyTitle: {
+    marginTop: 24,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1F2937',
+  },
+  emptySubtitle: {
+    marginTop: 8,
+    fontSize: 14,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
+  emptyButton: {
+    marginTop: 24,
+    backgroundColor: '#F97316',
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    borderRadius: 9999,
+  },
+  emptyButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  listContent: {
+    paddingTop: 16,
+    paddingBottom: 20,
+  },
+  list: {
+    flex: 1,
+  },
+});
 
 export default WishListScreen;
