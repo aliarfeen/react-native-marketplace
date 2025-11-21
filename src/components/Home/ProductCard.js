@@ -1,43 +1,47 @@
-import { useNavigation } from '@react-navigation/native';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Toast from 'react-native-toast-message';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, removeFromWishlist } from '../../redux/slices/wishlistSlice';
+import { useNavigation } from "@react-navigation/native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Toast from "react-native-toast-message";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../redux/slices/cartSlice";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/slices/wishlistSlice";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const wishlistItems = useSelector((state) => state.wishlist.items);
-  const isFavorite = wishlistItems.some(item => item.id === product.id);
+  const isFavorite = wishlistItems.some((item) => item.id === product.id);
 
   const toggleFavorite = () => {
     if (isFavorite) {
       dispatch(removeFromWishlist(product.id));
       Toast.show({
-        type: 'info',
-        text1: 'Removed from Wishlist',
-        text2: `${product.title} has been removed`,
+        type: "info",
+        text1: "Removed from Wishlist",
+        text2: '${product.title} has been removed',
         visibilityTime: 2000,
       });
     } else {
       dispatch(addToWishlist(product));
       Toast.show({
-        type: 'success',
-        text1: 'Added to Wishlist',
-        text2: `${product.title} has been added`,
+        type: "success",
+        text1: "Added to Wishlist",
+        text2: '${product.title} has been added',
         visibilityTime: 2000,
       });
     }
   };
 
-  const addToCart = () => {
-    console.log(`Added to cart: ${product.title}`);
+  const addToCartHandler = () => {
+    dispatch(addToCart(product));
     Toast.show({
-      type: 'success',
-      text1: 'Added to Cart',
-      text2: `${product.title} added successfully`,
+      type: "success",
+      text1: "Added to Cart",
+      text2: '${product.title} added successfully',
       visibilityTime: 2000,
     });
   };
@@ -46,27 +50,22 @@ const ProductCard = ({ product }) => {
   const iconColor = isFavorite ? "#EF4444" : "gray";
 
   return (
-    <TouchableOpacity
-      style={styles.card}
-      activeOpacity={0.8}
-    >
+    <TouchableOpacity style={styles.card} activeOpacity={0.8}>
       <View style={styles.cardInner}>
-        
-        <TouchableOpacity 
+
+        <TouchableOpacity
           style={styles.favoriteButton}
           onPress={toggleFavorite}
           activeOpacity={0.7}
         >
-          <Ionicons 
-            name={heartIcon} 
-            size={20} 
-            color={iconColor} 
-          />
+          <Ionicons name={heartIcon} size={20} color={iconColor} />
         </TouchableOpacity>
 
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('ProductDetails', { productId: product.id })}
+          onPress={() =>
+            navigation.navigate("ProductDetails", { productId: product.id })
+          }
         >
           <Image
             source={{ uri: product.image }}
@@ -79,15 +78,13 @@ const ProductCard = ({ product }) => {
           <Text style={styles.title} numberOfLines={1}>
             {product.title}
           </Text>
-          
-          <View style={styles.footerRow}>
-            <Text style={styles.price}>
-              ${product.price}
-            </Text>
 
-            <TouchableOpacity 
+          <View style={styles.footerRow}>
+            <Text style={styles.price}>${product.price}</Text>
+
+            <TouchableOpacity
               style={styles.addButton}
-              onPress={addToCart}
+              onPress={addToCartHandler}
               activeOpacity={0.7}
             >
               <Text style={styles.addButtonText}>Add</Text>
@@ -101,7 +98,7 @@ const ProductCard = ({ product }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: "48%", // allow 2 cards per row in the grid
+    width: "48%",
     height: 180,
     backgroundColor: "#F8F8F8",
     borderRadius: 12,
@@ -144,7 +141,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 12,
     textAlign: "center",
-    color: "#1F2937", 
+    color: "#1F2937",
   },
   footerRow: {
     flexDirection: "row",
@@ -155,12 +152,12 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#111827", 
+    color: "#111827",
   },
   addButton: {
     paddingHorizontal: 8,
     paddingVertical: 4,
-    backgroundColor: "#F97316", // bg-orange-500
+    backgroundColor: "#F97316",
     borderRadius: 8,
   },
   addButtonText: {
@@ -170,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductCard;
+export default ProductCard;

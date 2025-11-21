@@ -10,9 +10,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { fakeStoreApi } from "../api/fakeStoreApi";
+import Toast from 'react-native-toast-message';
 import { useDispatch } from "react-redux";
+import { fakeStoreApi } from "../api/fakeStoreApi";
 import { addToCart } from "../redux/slices/cartSlice";
+
 
 const ProductDetailsScreen = () => {
   const [product, setProduct] = useState(null);
@@ -128,7 +130,12 @@ const ProductDetailsScreen = () => {
           style={styles.addToCartButton}
           onPress={() => {
             dispatch(addToCart(product)); // <-- dispatch here
-            alert("Added to cart!");
+             Toast.show({
+                  type: 'success',
+                  text1: 'Added to Cart',
+                  text2: `${product.title} added successfully`,
+                  visibilityTime: 2000,
+                });
           }}
         >
           <Text style={styles.addToCartText}>Add to Cart</Text>
