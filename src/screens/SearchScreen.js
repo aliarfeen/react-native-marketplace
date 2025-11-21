@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { fakeStoreApi } from "../api/fakeStoreApi";
 
 const SearchScreen = () => {
@@ -149,7 +150,7 @@ const SearchScreen = () => {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       {/* Search Bar */}
       <View style={{ padding: 16, backgroundColor: "#FFFFFF" }}>
         <View
@@ -206,7 +207,7 @@ const SearchScreen = () => {
           keyboardShouldPersistTaps="handled"
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
