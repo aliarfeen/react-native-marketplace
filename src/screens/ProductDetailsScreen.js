@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import { fakeStoreApi } from "../api/fakeStoreApi";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/slices/cartSlice";
 
 const ProductDetailsScreen = () => {
   const [product, setProduct] = useState(null);
@@ -18,6 +20,7 @@ const ProductDetailsScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const { productId } = route.params;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -91,9 +94,7 @@ const ProductDetailsScreen = () => {
 
         {/* Product Info */}
         <View style={styles.contentWrapper}>
-          <Text style={styles.titleText}>
-            {product.title}
-          </Text>
+          <Text style={styles.titleText}>{product.title}</Text>
 
           <View style={styles.ratingRow}>
             <View style={styles.ratingStarsRow}>
@@ -105,25 +106,17 @@ const ProductDetailsScreen = () => {
           </View>
 
           <View style={styles.priceBox}>
-            <Text style={styles.priceText}>
-              ${product.price.toFixed(2)}
-            </Text>
+            <Text style={styles.priceText}>${product.price.toFixed(2)}</Text>
             <Text style={styles.inStockText}>In Stock</Text>
           </View>
 
           <View style={styles.sectionWrapper}>
-            <Text style={styles.sectionTitle}>
-              Description
-            </Text>
-            <Text style={styles.sectionBody}>
-              {product.description}
-            </Text>
+            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.sectionBody}>{product.description}</Text>
           </View>
 
           <View style={styles.sectionWrapper}>
-            <Text style={styles.sectionTitle}>
-              Category
-            </Text>
+            <Text style={styles.sectionTitle}>Category</Text>
             <Text style={styles.categoryText}>{product.category}</Text>
           </View>
         </View>
@@ -134,7 +127,7 @@ const ProductDetailsScreen = () => {
         <TouchableOpacity
           style={styles.addToCartButton}
           onPress={() => {
-            // Add to cart functionality
+            dispatch(addToCart(product)); // <-- dispatch here
             alert("Added to cart!");
           }}
         >

@@ -1,17 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-
-import wishlistReducer from '../redux/slices/wishlistSlice';
-import authReducer from './slices/authSlice';
-import homeReducer from './slices/homeSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./slices/cartSlice";
+import homeReducer from "./slices/homeSlice";
 
 const store = configureStore({
   reducer: {
     home: homeReducer,
-    auth: authReducer,
-    wishlist: wishlistReducer,
-    // products: productReducer,
-    // cart: cartReducer,
+    cart: cartReducer,
   },
 });
 
 export default store;
+git;
