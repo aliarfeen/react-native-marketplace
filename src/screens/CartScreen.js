@@ -1,122 +1,67 @@
-import React, { useState } from "react";
 import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
   FlatList,
-  StyleSheet,
+  Image,
   StatusBar,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
-import styles from "../styles/screens/cartStyles";
-import Icon from "react-native-vector-icons/Ionicons";
-import Toast from "react-native-toast-message";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+  removeFromCart,
+} from "../redux/slices/cartSlice";
+import styles from "../styles/screens/cartStyles";
 
 export default function CartScreen({ navigation }) {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: "1",
-      name: "Apple W-series 6",
-      price: 45000,
-      size: "35",
-      image: "https://via.placeholder.com/80",
-      qty: 1,
-      bgColor: "#E0F2F1",
-    },
-    {
-      id: "2",
-      name: "Siberia 800",
-      price: 45000,
-      size: "M",
-      image: "https://via.placeholder.com/80",
-      qty: 1,
-      bgColor: "#FCE4EC",
-    },
-  ]);
+  const dispatch = useDispatch();
 
-  const increaseQty = (id) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item
-      )
-    );
+  // 🔥 GET CART ITEMS FROM REDUX
+  const cartItems = useSelector((state) => state.cart.items);
 
-    Toast.show({
-      type: "success",
-      text1: "Quantity Updated",
-      text2: "Item quantity increased",
-    });
-  };
-
-  const decreaseQty = (id) => {
-    const item = cartItems.find((item) => item.id === id);
-
-    if (item.qty === 1) {
-      Toast.show({
-        type: "error",
-        text1: "Minimum Quantity",
-        text2: "You can't go lower than 1",
-      });
-      return;
-    }
-
-    setCartItems(
-      cartItems.map((i) => (i.id === id ? { ...i, qty: i.qty - 1 } : i))
-    );
-
-    Toast.show({
-      type: "info",
-      text1: "Quantity Updated",
-      text2: "Item quantity decreased",
-    });
-  };
-  const deleteItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-
-    Toast.show({
-      type: "error",
-      text1: "Item Removed",
-      text2: "Product deleted from cart",
-    });
-  };
-
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+  // 🔥 CALCULATE TOTAL
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
-      <View style={[styles.imageBox, { backgroundColor: item.bgColor }]}>
+      <View style={[styles.imageBox]}>
         <Image source={{ uri: item.image }} style={styles.image} />
       </View>
 
       <View style={{ flex: 1, marginLeft: 12 }}>
         <View style={styles.row}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.size}>Size: {item.size}</Text>
+          <Text style={styles.name}>{item.title}</Text>
         </View>
 
-        <Text style={styles.price}>₦ {item.price.toLocaleString()}</Text>
+        <Text style={styles.price}>${item.price}</Text>
 
         <View style={styles.bottomRow}>
           <View style={styles.qtyContainer}>
             <TouchableOpacity
-              onPress={() => decreaseQty(item.id)}
+              onPress={() => dispatch(decreaseQuantity(item.id))}
               style={styles.qtyButton}
             >
               <Text style={styles.qtySymbol}>–</Text>
             </TouchableOpacity>
 
-            <Text style={styles.qtyNumber}>{item.qty}</Text>
+            <Text style={styles.qtyNumber}>{item.quantity}</Text>
 
             <TouchableOpacity
-              onPress={() => increaseQty(item.id)}
+              onPress={() => dispatch(increaseQuantity(item.id))}
               style={styles.qtyButton}
             >
               <Text style={styles.qtySymbol}>+</Text>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity onPress={() => deleteItem(item.id)}>
+          <TouchableOpacity onPress={() => dispatch(removeFromCart(item.id))}>
             <Icon name="trash-outline" size={22} color="red" />
           </TouchableOpacity>
         </View>
@@ -126,11 +71,7 @@ export default function CartScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
+      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
 
       {/* Header */}
       <View style={styles.header}>
@@ -145,7 +86,7 @@ export default function CartScreen({ navigation }) {
 
       <FlatList
         data={cartItems}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 20 }}
       />
@@ -153,7 +94,7 @@ export default function CartScreen({ navigation }) {
       <View style={styles.totalContainer}>
         <View style={styles.totalBox}>
           <Text style={styles.totalText}>Total</Text>
-          <Text style={styles.totalAmount}>₦ {total.toLocaleString()}</Text>
+          <Text style={styles.totalAmount}>${total.toFixed(2)}</Text>
         </View>
 
         <TouchableOpacity
@@ -170,5 +111,5 @@ export default function CartScreen({ navigation }) {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );
+  );
 }
