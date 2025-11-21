@@ -19,7 +19,6 @@ const SearchScreen = () => {
   const [allProducts, setAllProducts] = useState([]);
   const navigation = useNavigation();
 
-  // Fetch all products on component mount
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -36,7 +35,6 @@ const SearchScreen = () => {
     fetchProducts();
   }, []);
 
-  // Filter products based on search query
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setSearchResults([]);
